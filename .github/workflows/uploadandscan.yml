@@ -15,19 +15,15 @@ jobs:
           java-version: 17
           cache: 'maven'
           architecture: x64
-      - name: Robot Reporter
-        uses: joonvena/robotframework-reporter-action@v2.2
-        with:
-            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Review artifacts
-        run: ls
+        run: ls target
       - name: Upload jar
         uses: actions/upload-artifact@v3
         with:
          name: webgoat
-         path: webgoat.jar
+         path: target/webgoat.jar
          if-no-files-found: warn
   Upload-and-Scan:
     needs: Build
