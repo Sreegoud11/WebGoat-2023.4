@@ -16,7 +16,7 @@ jobs:
           cache: 'maven'
           architecture: x64
       - name: Build with Maven
-        run: mvn clean verify --f pom.xml
+        run: mvn -B package --file pom.xml
       - name: Review artifacts
         run: ls
       - name: Upload jar
