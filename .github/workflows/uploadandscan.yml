@@ -16,17 +16,19 @@ jobs:
         run: mvn clean verify --f pom.xml
       - name: Review artifacts
         run: ls
+      - name: Create artifact
+        run: mkdir /target/webgoat.war
       - name: Upload war
         uses: actions/upload-artifact@v2
         with:
          name: WebGoatWar
-         path: webgoat.war
+         path: target/webgoat.war
   Upload-and-Scan:
     needs: Build
     runs-on: ubuntu-latest
     steps:
     - name: Download war
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: WebGoatWar
     - name: Set up JDK 17
