@@ -20,7 +20,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
          name: WebGoatJar
-         path: app/target/webgoat.jar
+         path: target/webgoat.jar
   Upload-and-Scan:
     needs: Build
     runs-on: ubuntu-latest
