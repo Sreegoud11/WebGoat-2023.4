@@ -15,6 +15,8 @@ jobs:
           java-version: 17
           cache: 'maven'
           architecture: x64
+      - name: Robot Reporter
+        uses: joonvena/robotframework-reporter-action@v2.2
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Review artifacts
