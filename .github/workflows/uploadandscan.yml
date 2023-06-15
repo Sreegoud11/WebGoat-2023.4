@@ -1,0 +1,65 @@
+name: pipeline-scan 
+
+on: push
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.3
+      - name: setup JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Build
+        run: mvn clean verify --f WebGoat-2023.4/pom.xml
+      - name: Review artifacts
+        run: ls WebGoat-2023.4
+      - name: Upload war
+        uses: actions/upload-artifact@v2
+        with:
+         name: WebGoatWar
+         path: app/target/webgoat.war
+  #Pipeline-Scan       
+  Pipeline-Scan:
+    needs: Build
+    runs-on: ubuntu-latest
+    env:
+      SRCCLR_API_TOKEN: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzc4NjUyLCJleHAiOjE2ODMyNzQwMTEsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiJhZTVjMThjMi1iNjkyLTQ0ZjQtOTk5NS1jNGU4YmQxZjAyODgiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.tnH5x-TaYtvwZOv9OyjIFzJgUo0NvLLmdxElGSLqbf6-QKyN8z7ww3BesfWuWBCLtfv7Hpxz112ZNC5uPZD8OwMNEnCjV_nB5mPUGGihTEQs-0YpCHqSWNlyZSE91zdz2Hgo0__8WbbtYvSZ1o_DxqFdkUccbJ2iqYY_phX6OpA"
+    steps:
+      - name: Download war
+        uses: actions/download-artifact@v2
+        with:
+          name: WebGoatWar
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Download the Pipeline Scanner
+        uses: wei/curl@master
+        with:
+          args: -O https://downloads.veracode.com/securityscan/pipeline-scan-LATEST.zip
+      - name: Unzip the Pipeline Scanner
+        run: unzip pipeline-scan-LATEST.zip
+      - name: Change permissions
+        run: chmod +x pipeline-scan.jar
+      - name: Change permissions jar
+        run: chmod +x webgoat.war
+        
+# DESCARGAR POLITICA
+      #- name: Download policy
+      #  run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "3848a424a18113931339cf47e3b6203e" --veracode_api_key "3f808860367da0428092fa323c61981f20c74e5a78a1cf9d33e99be08aeb9b1f788c4119df74d6d6cace3296bf3681286d08fdfc7df91fdb4f6c2db7eb41c174" --request_policy "AppSec-A"
+
+      - name: Review artifacts
+        run: ls -a
+      - name: Run Pipeline Scanner
+      
+#SIN POLITICA
+       #run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "3848a424a18113931339cf47e3b6203e" --veracode_api_key "3f808860367da0428092fa323c61981f20c74e5a78a1cf9d33e99be08aeb9b1f788c4119df74d6d6cace3296bf3681286d08fdfc7df91fdb4f6c2db7eb41c174" --file "webgoat.war" --fail_on_severity="Very High, High" --fail_on_cwe="95"
+  
+#CON POLITICA     
+       #run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "3848a424a18113931339cf47e3b6203e" --veracode_api_key "3f808860367da0428092fa323c61981f20c74e5a78a1cf9d33e99be08aeb9b1f788c4119df74d6d6cace3296bf3681286d08fdfc7df91fdb4f6c2db7eb41c174" --file "webgoat.war" --policy_file "AppSec-A.json"
+
+#SIN VULNERABILIDADES
+        run: java -Dpipeline.debug=true -jar pipeline-scan.jar --veracode_api_id "3848a424a18113931339cf47e3b6203e" --veracode_api_key "3f808860367da0428092fa323c61981f20c74e5a78a1cf9d33e99be08aeb9b1f788c4119df74d6d6cace3296bf3681286d08fdfc7df91fdb4f6c2db7eb41c174" --file "webgoat.war" --fail_on_severity="Very Low"
