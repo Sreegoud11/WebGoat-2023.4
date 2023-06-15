@@ -19,7 +19,7 @@ jobs:
       - name: Create artifact
         run: mkdir /target/webgoat.war
       - name: Upload war
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
          name: WebGoatWar
          path: target/webgoat.war
