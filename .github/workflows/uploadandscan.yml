@@ -13,14 +13,14 @@ jobs:
         with:
           java-version: 11
       - name: Build
-        run: mvn clean verify --f WebGoat-2023.4/pom.xml
+        run: mvn clean verify --f pom.xml
       - name: Review artifacts
-        run: ls WebGoat-2023.4
+        run: ls
       - name: Upload war
         uses: actions/upload-artifact@v2
         with:
          name: WebGoatWar
-         path: app/target/webgoat.war
+         path: target/webgoat.war
   #Pipeline-Scan       
   Pipeline-Scan:
     needs: Build
