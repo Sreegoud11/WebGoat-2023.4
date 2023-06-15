@@ -17,6 +17,8 @@ jobs:
           architecture: x64
       - name: Robot Reporter
         uses: joonvena/robotframework-reporter-action@v2.2
+        with:
+            gh_access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Review artifacts
