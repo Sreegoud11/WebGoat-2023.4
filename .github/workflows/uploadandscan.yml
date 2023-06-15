@@ -20,7 +20,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
          name: WebGoatJar
-         path: target/webgoat.jar
+         path: webgoat.jar
   #Pipeline-Scan       
   Pipeline-Scan:
     needs: Build
