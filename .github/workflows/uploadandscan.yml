@@ -21,7 +21,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
          name: WebGoat
-         path: target/webgoat.jar
+         path: ./target/webgoat.jar
   Upload-and-Scan:
     needs: Build
     runs-on: ubuntu-latest
