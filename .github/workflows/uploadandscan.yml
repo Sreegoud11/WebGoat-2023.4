@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
          name: webgoat
-         path: /webgoat.jar
+         path: webgoat.jar
          if-no-files-found: warn
   Upload-and-Scan:
     needs: Build
