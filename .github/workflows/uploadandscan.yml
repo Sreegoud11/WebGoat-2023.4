@@ -15,6 +15,8 @@ jobs:
           java-version: 17
           cache: 'maven'
           architecture: x64
+      - name: Docker Login
+        uses: docker/login-action@v2.2.0
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Review artifacts
