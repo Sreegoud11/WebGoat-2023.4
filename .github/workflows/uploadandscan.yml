@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
          name: webgoat
-         path: target/webgoat.jar
+         path: target/webgoat-2023.4.jar
          if-no-files-found: warn
   Upload-and-Scan:
     needs: Build
@@ -41,7 +41,7 @@ jobs:
     - name: Create folder
       run: mkdir app
     - name: Move artifact
-      run: mv webgoat.jar app
+      run: mv webgoat-2023.4.jar app
     - name: Upload and scan
       uses: veracode/veracode-uploadandscan-action@master 
       with: 
