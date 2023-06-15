@@ -20,8 +20,9 @@ jobs:
       - name: Upload jar
         uses: actions/upload-artifact@v3
         with:
-         name: WebGoat
+         name: webgoat
          path: ./target/webgoat.jar
+         if-no-files-found: warn
   Upload-and-Scan:
     needs: Build
     runs-on: ubuntu-latest
@@ -29,7 +30,7 @@ jobs:
     - name: Download jar
       uses: actions/download-artifact@v3
       with:
-        name: WebGoat
+        name: webgoat
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
