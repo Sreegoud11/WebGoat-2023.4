@@ -14,6 +14,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
           cache: 'maven'
+          architecture: x64
       - name: Build with Maven
         run: mvn clean verify --f pom.xml
       - name: Review artifacts
