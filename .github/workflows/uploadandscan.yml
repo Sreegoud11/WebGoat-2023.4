@@ -97,7 +97,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     - name: Running SCA agent Based
-      working-directory: target/webgoat-2023.4.jar
+      working-directory: WebGoat-2023.4_A
       run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --update-advisor 
   
   #Upload-and-Scan:
