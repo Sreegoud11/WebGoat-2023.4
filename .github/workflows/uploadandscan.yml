@@ -25,32 +25,58 @@ jobs:
          name: webgoat
          path: target/webgoat-2023.4.jar
          if-no-files-found: warn
-  Upload-and-Scan:
+         
+         
+         
+         
+         #Analisis SCA 
+  SCA-Scan:
     needs: Build
     runs-on: ubuntu-latest
+    env:
+      SRCCLR_API_TOKEN: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mzc4NjUyLCJleHAiOjE2ODMyNzQwMTEsImF1dGhvcml0aWVzIjoiQUdFTlQiLCJqdGkiOiJhZTVjMThjMi1iNjkyLTQ0ZjQtOTk5NS1jNGU4YmQxZjAyODgiLCJjbGllbnRfaWQiOiIiLCJzY29wZSI6W119.tnH5x-TaYtvwZOv9OyjIFzJgUo0NvLLmdxElGSLqbf6-QKyN8z7ww3BesfWuWBCLtfv7Hpxz112ZNC5uPZD8OwMNEnCjV_nB5mPUGGihTEQs-0YpCHqSWNlyZSE91zdz2Hgo0__8WbbtYvSZ1o_DxqFdkUccbJ2iqYY_phX6OpA"
     steps:
     - name: Download jar
       uses: actions/download-artifact@v3
-      with:
+      with: 
         name: webgoat
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: 17
-    - name: Create folder
-      run: mkdir app
-    - name: Move artifact
-      run: mv webgoat-2023.4.jar app
-    - name: Upload and scan
-      uses: veracode/veracode-uploadandscan-action@master 
-      with: 
-        appname: 'WebGoat-2023.4'
-        createprofile: 'true'
-        filepath: 'app'
-        vid: "3848a424a18113931339cf47e3b6203e"
-        vkey: "3f808860367da0428092fa323c61981f20c74e5a78a1cf9d33e99be08aeb9b1f788c4119df74d6d6cace3296bf3681286d08fdfc7df91fdb4f6c2db7eb41c174"
-        scantimeout: 15
-        exclude: '*.js'
-        include: '*.jar'
-        criticality: 'VeryLow'
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Running SCA agent Based
+      working-directory: app
+      run: curl -sSL https://download.sourceclear.com/ci.sh | bash -s scan --update-advisor 
+  
+  #Upload-and-Scan:
+   # needs: Build
+   # runs-on: ubuntu-latest
+   # steps:
+   # - name: Download jar
+   #   uses: actions/download-artifact@v3
+   #   with:
+   #     name: webgoat
+   # - name: Set up JDK 17
+   #   uses: actions/setup-java@v3
+   #   with:
+   #     distribution: 'temurin'
+   #     java-version: 17
+   # - name: Create folder
+   #   run: mkdir app
+   # - name: Move artifact
+   #   run: mv webgoat-2023.4.jar app
+   # - name: Upload and scan
+   #   uses: veracode/veracode-uploadandscan-action@master 
+   #   with: 
+   #     appname: 'WebGoat-2023.4'
+   #     createprofile: 'true'
+   #     filepath: 'app'
+   #     vid: "3848a424a18113931339cf47e3b6203e"
+   #     vkey: "3f808860367da0428092fa323c61981f20c74e5a78a1cf9d33e99be08aeb9b1f788c4119df74d6d6cace3296bf3681286d08fdfc7df91fdb4f6c2db7eb41c174"
+   #     scantimeout: 15
+   #     exclude: '*.js'
+   #     include: '*.jar'
+  #      criticality: 'VeryLow'
